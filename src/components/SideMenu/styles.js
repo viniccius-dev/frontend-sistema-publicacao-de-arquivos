@@ -88,6 +88,11 @@ export const Nav = styled.nav`
             font-size: 20px;
             position: absolute;
             right: 24px;
+            transition: transform 0.3s ease-in;
+
+            &[data-filters-active="true"] {
+                transform: rotate(-180deg);
+            }
         }
     }
 

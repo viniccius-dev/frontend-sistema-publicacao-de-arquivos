@@ -55,7 +55,7 @@ export function SideMenu({ menuIsOpen, onCloseMenu, onLinkClick }) {
                 >
                     <div onClick={toggleFilters} style={{cursor: "pointer"}}>
                             <MdAssignment /> Publicações {" "}
-                            {filtersVisible ? <MdOutlineKeyboardArrowUp /> : <MdOutlineKeyboardArrowDown />}
+                            <MdOutlineKeyboardArrowDown data-filters-active={filtersVisible} />
                     </div> 
                     <div className="bidsFilters">
                             <ul>
@@ -167,8 +167,8 @@ export function SideMenu({ menuIsOpen, onCloseMenu, onLinkClick }) {
                 </a>
 
                 <a
-                    data-menu-active={activeLink === "/types-of-publication"}
-                    onClick={() => handleLinkClick("/types-of-publication")}     
+                    data-menu-active={activeLink === "/publication-types"}
+                    onClick={() => handleLinkClick("/publication-types")}     
                 >
                     <FaCodeBranch />Tipos de Publicação
                 </a>
