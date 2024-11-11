@@ -5,7 +5,7 @@ import { Fixed } from "../../components/Fixed";
 export function Home() {
     return (
         <Container>
-            <Fixed>
+            <Fixed title="Publicações" route="/">
 
             </Fixed>
         </Container>

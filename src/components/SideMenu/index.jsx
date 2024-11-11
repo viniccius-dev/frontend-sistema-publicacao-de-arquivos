@@ -1,14 +1,36 @@
-import { HiXMark } from 'react-icons/hi2';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { Container, Header, Title, Button, Nav, Footer, Role } from './styles';
 
-import { FaCodeBranch, FaUsers } from 'react-icons/fa';
+import { HiXMark } from 'react-icons/hi2';
 import { BiDesktop } from 'react-icons/bi';
-import { MdAssignment, MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 import { TbLogout2, TbNetwork } from 'react-icons/tb';
+import { FaCodeBranch, FaUsers } from 'react-icons/fa';
+import { MdAssignment, MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 
 import imgAvatarPlaceholder from "../../assets/avatar_placeholder.svg";
 
 export function SideMenu({ menuIsOpen, onCloseMenu, onLinkClick }) {
+    const navigation = useNavigate();
+
+    const [filtersVisible, setFiltersVisible] = useState(false);
+    const [activeLink, setActiveLink] = useState(onLinkClick);
+
+    const toggleFilters = () => {
+        if(activeLink === "/") {
+            setFiltersVisible(!filtersVisible);
+        }
+    };
+
+    const handleLinkClick = (linkName) => {
+        if(linkName !== "/" || activeLink !== "/" && linkName === "/") {
+            onCloseMenu();
+            navigation(linkName);
+        }
+        setActiveLink(linkName);
+    };
+
     return (
         <Container data-menu-is-open={menuIsOpen}>
             <Header>
@@ -24,12 +46,16 @@ export function SideMenu({ menuIsOpen, onCloseMenu, onLinkClick }) {
             <Nav>
                 <a 
                     className="bidsButton"
-                    data-menu-active="true"
-                    data-filters-active="true"
+                    data-filters-active={filtersVisible}
+                    style={{cursor: "default"}}
+                    onClick={() => handleLinkClick("/")}
+                    data-menu-active={
+                        activeLink === "/"
+                    }
                 >
-                    <div>
-                            <MdAssignment /> Licitações {" "}
-                            <MdOutlineKeyboardArrowDown />
+                    <div onClick={toggleFilters} style={{cursor: "pointer"}}>
+                            <MdAssignment /> Publicações {" "}
+                            {filtersVisible ? <MdOutlineKeyboardArrowUp /> : <MdOutlineKeyboardArrowDown />}
                     </div> 
                     <div className="bidsFilters">
                             <ul>
@@ -126,15 +152,24 @@ export function SideMenu({ menuIsOpen, onCloseMenu, onLinkClick }) {
                     </div>
                 </a>
 
-                <a>
+                <a
+                    data-menu-active={activeLink === "/users"}
+                    onClick={() => handleLinkClick("/users")}
+                >
                     <FaUsers />Usuários
                 </a>
 
-                <a>
+                <a
+                    data-menu-active={activeLink === "/domains"}
+                    onClick={() => handleLinkClick("/domains")}
+                >
                     <TbNetwork />Domínios
                 </a>
 
-                <a>
+                <a
+                    data-menu-active={activeLink === "/types-of-publication"}
+                    onClick={() => handleLinkClick("/types-of-publication")}     
+                >
                     <FaCodeBranch />Tipos de Publicação
                 </a>
 

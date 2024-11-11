@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-import { Container } from './styles';
+import { Container, FixedContent } from './styles';
 import { SideMenu } from '../SideMenu';
+import { Header } from '../Header';
 
 export function Fixed({ title, route, children }) {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -13,7 +14,15 @@ export function Fixed({ title, route, children }) {
                 onCloseMenu={() => setMenuIsOpen(false)}
                 onLinkClick={route}
             />
+
+            <FixedContent>
+                <Header 
+                    title={title}
+                    onOpenMenu={() => setMenuIsOpen(true)}
+                />
+            </FixedContent>
             
+            {children}
         </Container>
     );
 }
