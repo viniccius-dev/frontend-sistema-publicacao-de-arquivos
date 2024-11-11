@@ -1,20 +1,24 @@
 import { HiXMark } from 'react-icons/hi2';
-import { Container, Header, Title, Button, Nav } from './styles';
+import { Container, Header, Title, Button, Nav, Footer, Role } from './styles';
 
 import { FaCodeBranch, FaUsers } from 'react-icons/fa';
 import { BiDesktop } from 'react-icons/bi';
 import { MdAssignment, MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 import { TbLogout2, TbNetwork } from 'react-icons/tb';
 
+import imgAvatarPlaceholder from "../../assets/avatar_placeholder.svg";
+
 export function SideMenu({ menuIsOpen, onCloseMenu, onLinkClick }) {
     return (
-        <Container>
+        <Container data-menu-is-open={menuIsOpen}>
             <Header>
                 <Title><BiDesktop /> Painel Administrativo</Title>
 
-                <Button>
-                    <HiXMark />
-                </Button>
+                {menuIsOpen && (
+                    <Button>
+                        <HiXMark onClick={onCloseMenu} />
+                    </Button>
+                )}
             </Header>
 
             <Nav>
@@ -138,6 +142,16 @@ export function SideMenu({ menuIsOpen, onCloseMenu, onLinkClick }) {
                     <TbLogout2 />Sair da Conta
                 </a>
             </Nav>
+
+            <Footer>
+                <img src={imgAvatarPlaceholder} alt="Foto do usuário" />
+                <div>
+                    <strong>Marcos Vinícius</strong>
+                    <small>vinicius@agencianew.com</small>
+                </div>
+
+                <Role type="button">admin</Role>
+            </Footer>
         </Container>
     );
 }

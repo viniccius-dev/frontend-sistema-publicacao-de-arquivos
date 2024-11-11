@@ -134,3 +134,43 @@ export const Nav = styled.nav`
         }
     }
 `;
+
+export const Footer = styled.footer`
+    padding: 15px 24px;
+    display: flex;
+    align-items: center;
+    color: ${({ theme }) => theme.COLORS.WHITE_100};
+    border-top: ${({ theme }) => `1px solide ${theme.COLORS.BROWN_200}`};
+    gap: 7px;
+    
+    > img {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+    }
+
+    > div {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+    }
+
+    > div strong {
+        font-size: 0.88rem;
+    }
+
+    > div small {
+        font-size: 0.75rem;
+        word-break: break-all;
+        min-width: 11.1rem;
+    }
+`;
+
+export const Role = styled.div`
+    user-select: none;
+    display: flex;
+    align-items: end;
+    margin-left: 10px;
+    color: ${({ theme }) => theme.COLORS.GRAY_100};
+    font-style: italic;
+`;
