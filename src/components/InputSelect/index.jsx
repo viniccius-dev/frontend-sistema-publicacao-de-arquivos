@@ -33,23 +33,21 @@ export function InputSelect({ title, group, options, onSelect, selected, objectV
                 </Chevrons>
             </SelectButton>
 
-            {isOpen && (
-                <OptionList>
-                    {options.map(option => (
-                        <Option key={option.id} onClick={() => handleSelect(option)}>
-                            <input 
-                                type="radio"
-                                name={group}
-                                value={option[objectValue]}
-                                checked={selectedOption && selectedOption[objectValue] === option[objectValue]}
-                                readOnly
-                            />
-                            <span>{option[objectValue]}</span>
-                            {selectedOption && selectedOption[objectValue] === option[objectValue] && <FiCheck /> }
-                        </Option>
-                    ))}
-                </OptionList>
-            )}
+            <OptionList data-is-open={isOpen}>
+                {options.map(option => (
+                    <Option key={option.id} onClick={() => handleSelect(option)}>
+                        <input 
+                            type="radio"
+                            name={group}
+                            value={option[objectValue]}
+                            checked={selectedOption && selectedOption[objectValue] === option[objectValue]}
+                            readOnly
+                        />
+                        <span>{option[objectValue]}</span>
+                        {selectedOption && selectedOption[objectValue] === option[objectValue] && <FiCheck /> }
+                    </Option>
+                ))}
+            </OptionList>
         </Container>
     );
 }
