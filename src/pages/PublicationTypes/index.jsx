@@ -58,6 +58,43 @@ export function PublicationTypes() {
                             <Checkbox>Descrição</Checkbox>
                         </CheckList>
                     </InputWrapper>
+                    <W50>
+                        <InputWrapper>
+                            <label>título do campo: Número</label>
+
+                            <Input 
+                                placeholder="Digite o nome do campo número"
+                            background="admin"
+                            />
+                        </InputWrapper>
+                        <InputWrapper>
+                            <label>título do campo: Data</label>
+
+                            <Input 
+                                placeholder="Digite o nome do campo data"
+                            background="admin"
+                            />
+                        </InputWrapper>
+                    </W50>
+                    <W50>
+                        <InputWrapper>
+                            <label>título do campo: Descrição</label>
+
+                            <Input 
+                                placeholder="Digite o nome do campo descrição"
+                            background="admin"
+                            />
+                        </InputWrapper>
+                        <InputWrapper>
+                            <label>título do campo: Arquivos</label>
+
+                            <Input 
+                                placeholder="Digite o nome do campo arquivos"
+                            background="admin"
+                            />
+                        </InputWrapper>
+                    </W50>
+                    <Button title="Salvar" />
                 </Section>
             </Container>
         </Fixed>
