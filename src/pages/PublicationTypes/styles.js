@@ -1,37 +1,39 @@
 import styled from "styled-components";
 import { DEVICE_BREAKPOINTS } from "../../styles/deviceBreakpoints";
 
-export const Container = styled.form`
+export const Container = styled.div`
     grid-area: content;
-    padding: 1.25rem 1.5rem;
-
+    padding: 0 1.5rem;
     overflow-y: auto;
+
+    .usersLoading {
+        height: 80%;
+    }
 `;
 
 export const W50 = styled.div`
     display: flex;
-    gap: 10px;
     margin-bottom: 10px;
     flex-direction: column;
 
-    &:last-of-type {
-        margin-top: 20px;
-
-        > div:last-of-type {
-            display: flex;
-            align-items: end;
-            margin-top: 0;
-            margin-bottom: 8px;
-        }
-    }
-
     @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
         flex-direction: row;
+        gap: 10px;
     }
 `;
 
 export const InputWrapper = styled.div`
     width: 100%;
+
+    &.buttons {
+        margin-bottom: 8px;
+
+        @media (min-width: ${DEVICE_BREAKPOINTS.SM}) {
+            display: flex;
+            align-items: end;
+            gap: 10px;
+        }
+    }
 
     > label {
         font-size: 1.1rem;
