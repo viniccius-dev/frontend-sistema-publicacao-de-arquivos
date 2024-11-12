@@ -44,3 +44,7 @@ export const InputWrapper = styled.div`
         margin-top: 5px;
     }
 `;
+
+export const CheckList = styled.div`
+    padding: 5px 0;
+`;
