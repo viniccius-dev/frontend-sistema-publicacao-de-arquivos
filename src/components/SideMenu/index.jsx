@@ -50,7 +50,10 @@ export function SideMenu({ menuIsOpen, onCloseMenu, onLinkClick }) {
                     style={{cursor: "default"}}
                     onClick={() => handleLinkClick("/")}
                     data-menu-active={
-                        activeLink === "/"
+                        activeLink === "/" ||
+                        activeLink === "/create-publication" || 
+                        activeLink === "/details" ||
+                        activeLink === "/edit-bidding"
                     }
                 >
                     <div onClick={toggleFilters} style={{cursor: "pointer"}}>

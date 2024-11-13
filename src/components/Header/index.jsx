@@ -1,11 +1,15 @@
+import { useNavigate } from 'react-router-dom';
+
 import { Container, Menu } from "./styles";
 import { Button } from "../Button";
 
 import { FaList, FaPlus } from "react-icons/fa";
 
 export function Header({ title, onOpenMenu }) {
+    const navigate = useNavigate();
+
     function handleLinkClick() {
-        Navigate("/create-publication");
+       navigate("/create-publication");
     }
 
     return (

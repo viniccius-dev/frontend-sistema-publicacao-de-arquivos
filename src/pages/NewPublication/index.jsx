@@ -10,7 +10,7 @@ import { Uploads } from '../../components/Uploads';
 import { Button } from '../../components/Button';
 import { Fixed } from '../../components/Fixed';
 
-export function NewBidding() {
+export function NewPublication() {
     const typesOfPublication = [
         { id: 1, name: "Ata" },
         { id: 2, name: "Decreto" },
