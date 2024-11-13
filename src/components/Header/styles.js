@@ -22,12 +22,6 @@ export const Container = styled.div`
         margin: 0;
     }
 
-    @media (min-width: ${DEVICE_BREAKPOINTS.SM}) {
-        > h1 {
-            font-size: 1.5rem;
-        }
-    }
-
     @media (min-width: ${DEVICE_BREAKPOINTS.MD}) {
         > h1 {
             padding: 0 1rem 0 0;
