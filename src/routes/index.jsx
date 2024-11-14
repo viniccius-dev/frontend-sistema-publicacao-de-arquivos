@@ -6,6 +6,7 @@ import { PublicationTypes } from "../pages/PublicationTypes";
 import { Users } from "../pages/Users";
 import { Domains } from "../pages/Domains";
 import { NewPublication } from "../pages/NewPublication";
+import { Details } from "../pages/Details";
 
 export function AppRoutes() {
     return (
@@ -17,6 +18,7 @@ export function AppRoutes() {
                 <Route path="/users" element={<Users />} />
                 <Route path="/domains" element={<Domains />} />
                 <Route path="/create-publication" element={<NewPublication />} />
+                <Route path="/details" element={<Details />} />
 
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
