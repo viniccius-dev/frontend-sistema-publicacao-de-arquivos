@@ -1,13 +1,25 @@
-import { Container } from "./styles";
+import { Container, Publications } from "./styles";
 
 import { Fixed } from "../../components/Fixed";
+import { Publication } from "../../components/Publication";
+import { Search } from "../../components/Search";
 
 export function Home() {
     return (
-        <Container>
-            <Fixed title="Publicações" route="/">
+        <Fixed title="Publicações" route="/">
+            <Container>
 
-            </Fixed>
-        </Container>
+                <Search />
+
+                <Publications>
+                    <Publication />
+                    <Publication />
+                    <Publication />
+                    <Publication />
+                    <Publication />
+                </Publications>
+
+            </Container>
+        </Fixed>
     );
 }

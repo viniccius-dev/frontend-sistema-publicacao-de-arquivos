@@ -14,7 +14,7 @@ export function PublicationTypes() {
     ]
 
     return (
-        <Fixed title="Tipos de Publicações Registradas" route="/publication-types">
+        <Fixed title="Tipos de Publicações" route="/publication-types">
             <Container>
                 <Section title="Tipos de Publicações Registradas">
                     <W50>
