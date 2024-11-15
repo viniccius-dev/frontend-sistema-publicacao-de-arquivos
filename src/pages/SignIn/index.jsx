@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FiMail, FiLock } from 'react-icons/fi';
 
-// import { useAuth } from '../../hooks/auth';
+import { useAuth } from '../../hooks/auth';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import logo from '../../assets/logo.png';
@@ -13,11 +13,11 @@ export function SignIn() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // const { signIn } = useAuth();
+    const { signIn } = useAuth();
 
     async function handleSignIn() {
         setLoading(true);
-        // await signIn({ email, password });
+        await signIn({ email, password });
         setLoading(false);
     }
 

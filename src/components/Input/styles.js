@@ -17,7 +17,7 @@ export const Container = styled.div`
 
         padding: .75rem;
         border-radius: .63rem;
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
 
         color: ${({ theme, $background  }) => $background === "default" ? theme.COLORS.BACKGROUND_900 : theme.COLORS.WHITE_100};
         background: transparent;

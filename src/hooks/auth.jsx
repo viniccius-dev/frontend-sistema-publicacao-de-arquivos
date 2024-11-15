@@ -65,15 +65,20 @@ function AuthProvider({ children }) {
     };
 
     useEffect(() => {
-        if(!isTokenExpired(token)) {
-            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            setData({
-                token,
-                user: JSON.parse(user)
-            });
-        } else {
-            signOut();
-        };
+        const token = localStorage.getItem("@agencianew:token");
+        const user = localStorage.getItem("@agencianew:user");
+
+        if(token && user) {
+            if(!isTokenExpired(token)) {
+                api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                setData({
+                    token,
+                    user: JSON.parse(user)
+                });
+            } else {
+                signOut();
+            };
+        }
         setLoading(false);
     }, []);
 

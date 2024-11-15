@@ -1,27 +1,30 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-import { SignIn } from '../pages/SignIn';
-import { Home } from '../pages/Home';
-import { PublicationTypes } from "../pages/PublicationTypes";
-import { Users } from "../pages/Users";
-import { Domains } from "../pages/Domains";
-import { NewPublication } from "../pages/NewPublication";
-import { Details } from "../pages/Details";
+import { useAuth } from "../hooks/auth";
+
+import { SignIn } from "../pages/SignIn";
+import { LoggRoutes } from "./app.routes";
 
 export function AppRoutes() {
+    const { user, loading } = useAuth();
+
+    if(loading) {
+        return <></>;
+    };
+
     return (
         <BrowserRouter>
-            <Routes>
-                {/* <Route path="/" element={<SignIn />} /> */}
-                <Route path="/" element={<Home />} />
-                <Route path="/publication-types" element={<PublicationTypes />} />
-                <Route path="/users" element={<Users />} />
-                <Route path="/domains" element={<Domains />} />
-                <Route path="/create-publication" element={<NewPublication />} />
-                <Route path="/details" element={<Details />} />
+            {
+                !user
+                ?
+                <Routes>
+                    <Route path="/" element={<SignIn />} />
 
-                <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
+                    <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+                :
+                <LoggRoutes />
+            }
         </BrowserRouter>
     );
 }
