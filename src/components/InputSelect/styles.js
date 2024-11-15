@@ -16,7 +16,7 @@ export const SelectButton = styled.div`
     border-radius: 10px;
     background-color: ${({ theme }) => theme.COLORS.GRAY_100};
     color: ${({ theme }) => theme.COLORS.WHITE_100};
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
 `;
 
 export const Chevrons = styled.div`

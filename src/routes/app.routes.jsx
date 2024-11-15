@@ -7,6 +7,7 @@ import { Users } from "../pages/Users";
 import { Domains } from "../pages/Domains";
 import { Details } from "../pages/Details";
 import { NewPublication } from "../pages/NewPublication";
+import { EditPublication } from "../pages/EditPublication";
 import { PublicationTypes } from "../pages/PublicationTypes";
 
 export function LoggRoutes() {
@@ -16,9 +17,10 @@ export function LoggRoutes() {
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/users" element={<Users />} />
-            <Route path="/Details" element={<Details />} />
-            <Route path="/create-publication" element={<NewPublication />} />
+            <Route path="/publication/:id" element={<Details />} />
             <Route path="/publication-types" element={<PublicationTypes />} />
+            <Route path="/edit-publication/:id" element={<EditPublication />} />
+            <Route path="/create-publication" element={<NewPublication />} />
 
             {user.role === "admin" && <Route path="/domains" element={<Domains />} />}
             

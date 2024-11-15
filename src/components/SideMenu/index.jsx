@@ -53,7 +53,7 @@ export function SideMenu({ menuIsOpen, onCloseMenu, onLinkClick }) {
                         activeLink === "/" ||
                         activeLink === "/create-publication" || 
                         activeLink === "/details" ||
-                        activeLink === "/edit-bidding"
+                        activeLink === "/edit-publication"
                     }
                 >
                     <div onClick={toggleFilters} style={{cursor: "pointer"}}>
