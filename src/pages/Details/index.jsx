@@ -8,37 +8,128 @@ import { Section } from '../../components/Section';
 import { Button } from '../../components/Button';
 import { Fixed } from '../../components/Fixed';
 import { File } from '../../components/File';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
+
+import { api } from '../../services/api';
 
 export function Details() {
+    const [publication, setPublication] = useState(null);
+    const [attachments, setAttachments] = useState([]);
+
+    const [animationLoading, setAnimationLoading] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
+
+    const params = useParams();
+    const navigate = useNavigate();
+
+    function handleLinkClick(pathFile) {
+        window.open(`${api.defaults.baseURL}/files/${pathFile}`, '_blank');
+    };
+
+    async function handleDeletePublication() {
+        try {
+            const confirm = window.confirm("Tem certeza que deseja deletar essa publicação e os documentos anexados a ela? Esta ação não poderá ser desfeita.");
+
+            if(confirm) {
+                setDeleteLoading(true);
+                const files = { attachments: attachments.map(attachment => attachment.id) };
+
+                await api.delete(`/publications/${params.id}`, { data: files });
+                alert("Publicação deletada com sucesso.");
+                navigate("/");
+            };
+        } catch(error) {
+            if(error.response) {
+                alert(error.response.data.message);
+            } else {
+                alert("Não foi possível deletar a publicação.");
+            };
+        } finally {
+            setDeleteLoading(false);
+        };
+    };
+
+    function handleLinkEdit() {
+        navigate(`/edit-publication/${params.id}`);
+    };
+
+    function formatDateTime(dateTime) {
+        const [fullDate, fullTime] = dateTime.split(' ');
+        const [year, month, day] = fullDate.split('-');
+        return `${day}/${month}/${year} às ${fullTime}`;
+    };
+
+    function getFileExtension(filename) {
+        return filename.split('.').pop();
+    };
+
+    useEffect(() => {
+        setAnimationLoading(true);
+        async function fetchPublication() {
+            const responsePublication = await api.get(`/publications/${params.id}`);
+            const responseAttachments = await api.get(`/publications/attachments/${params.id}`);
+            setPublication(responsePublication.data);
+            setAttachments(responseAttachments.data);
+            setAnimationLoading(false);
+        };
+
+        fetchPublication();
+    }, []);
 
     return (
         <Fixed title="Publicação" route="/details">
-            <Container>
-                <header>
-                    <h2> Lei Municipal, Lei n° 616 de 2024</h2>
-                    <small><FaClock /> Publicado em: 15/04/2024 às 09:30</small>
-                </header>
+            {
+                animationLoading ?
 
-                <Section title="Descrição">
-                    <p>Dolore sunt aute eiusmod eu excepteur veniam elit occaecat ex sunt elit. Officia sit cillum in eu reprehenderit in ad incididunt commodo. Veniam aliquip pariatur commodo aliqua. Lorem magna nostrud eiusmod amet est. Nostrud ullamco elit laborum mollit cupidatat ad sint velit amet. Ea pariatur do occaecat deserunt anim sunt do nostrud laborum ex quis duis labore labore. Magna fugiat in velit incididunt culpa eiusmod do eu ad.</p>
-                </Section>
+                    <LoadingSpinner loading={animationLoading} />
 
-                <Section title="Anexos">
-                    <File 
-                        title="Arquivo de Exemplo" 
-                        extension={"docx"}
-                    />
-                </Section>
+                :
 
-                <footer>        
-                    <Button title="Editar" />
-                    <Button background="admin" title="Excluir" />
-                </footer>
-            </Container>
+                    publication ?
 
-            {/* <NotFound>
-                <h2><TfiDropboxAlt /> Publicação Não Encontrada</h2>
-            </NotFound> */}
+                    <Container>
+                        <header>
+                            <h2>
+                                {publication.name}{publication.number && `, ${publication.number}`}{publication.date && `, ${publication.date}`}
+                            </h2>
+                            <small><FaClock /> Publicado em: {formatDateTime(publication.created_at)}</small>
+                        </header>
+
+                        {
+                            publication.description_title &&
+
+                            <Section title={publication.description_title}>
+                                <p>{publication.description}</p>
+                            </Section>
+                        }
+
+                        {
+                            attachments?.length > 0 &&
+                            <Section title={publication.file_title}>
+                                {attachments.map((file, index) => (
+                                    <File 
+                                        key={index}
+                                        title={file.name}
+                                        extension={getFileExtension(file.attachment)}
+                                        onClick={() => handleLinkClick(file.attachment)}
+                                    />
+                                ))}
+                            </Section>
+                        }
+
+                        <footer>        
+                            <Button title="Editar" onClick={handleLinkEdit} />
+                            <Button background="admin" title="Excluir" onClick={handleDeletePublication} loading={deleteLoading} />
+                        </footer>
+                    </Container>
+
+                    :
+
+                    <NotFound>
+                        <h2><TfiDropboxAlt /> Publicação Não Encontrada</h2>
+                    </NotFound>
+            }
+            
         </Fixed>
     );
 }
