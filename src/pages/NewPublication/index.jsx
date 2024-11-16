@@ -35,16 +35,52 @@ export function NewPublication() {
     };
 
     const isValidDateTime = (dateString) => {
-        const [day, month, year] = dateString.split('/');
+        // Valida o formato inicial com uma expressão regular
+        const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+        const match = dateString.match(regex);
+    
+        if (!match) {
+            return false;
+        }
+    
+        const [_, day, month, year] = match.map(Number);
+    
+        // Cria uma data no formato ISO e verifica se é válida
         const date = new Date(year, month - 1, day);
-        return !isNaN(date.getTime());
+        return (
+            date.getFullYear() === year &&
+            date.getMonth() === month - 1 &&
+            date.getDate() === day
+        );
     };
 
     const handleSubmit = async () => {
-        if(date && !isValidDateTime(date)) {
-            alert("Data inválida. Por favor, verifique e tente novamente.");
-            return
+        const errors = [];
+
+        if(selectedType?.number_title && !number.trim()) {
+            errors.push(`O campo ${selectedType?.number_title} não pode estar vazio.`);
         };
+
+        if(selectedType?.date_title) {
+            if(!date.trim()) {
+                errors.push(`O campo ${selectedType?.date_title} não pode estar vazio.`)
+            } else if(!isValidDateTime(date)) {
+                alert("Data inválida. Por favor, verifique e tente novamente.");
+            };
+        };
+
+        if(selectedType?.description_title && !description.trim()) {
+            errors.push(`O campo ${selectedType?.description_title} não pode estar vazio.`);
+        };
+
+        if(selectedType?.file_title && files.length === 0) {
+            errors.push("É necessário anexar pelo menos um arquivo.");
+        };
+
+        if(errors.length > 0) {
+            alert(errors.join("\n"));
+            return;
+        }
 
         const publicationData = {
             type_of_publication_id: selectedType?.id,
@@ -98,21 +134,29 @@ export function NewPublication() {
                     alert("Não foi possível acessar dados do domínio");
                 }
             });
-            
-            api.get("/types-of-publication")
-            .then((response) => {
-                setTypes(response.data)
-                setAnimationLoading(false);
-            })
-            .catch(error => {
-                if(error.response) {
-                    alert(error.response.data.message);
-                } else {
-                    alert("Não foi possível acessar dados dos tipos de publicação");
-                }
-            });
         }
+            
+        api.get("/types-of-publication")
+        .then((response) => {
+            setTypes(response.data)
+            setAnimationLoading(false);
+        })
+        .catch(error => {
+            if(error.response) {
+                alert(error.response.data.message);
+            } else {
+                alert("Não foi possível acessar dados dos tipos de publicação");
+            }
+        });
     }, [user.role]);
+    
+    useEffect(() => {
+        // Limpa os campos quando o tipo selecionado muda
+        setNumber("");
+        setDate("");
+        setDescription("");
+        setFiles([]);
+    }, [selectedType]);
 
     return (
         <Fixed title="Nova Publicação" route="/create-publication">

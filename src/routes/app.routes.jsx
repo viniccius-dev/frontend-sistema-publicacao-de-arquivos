@@ -24,6 +24,7 @@ export function LoggRoutes() {
             {user.role === "admin" && <Route path="/domains" element={<Domains />} />}
             {user.role === "admin" && <Route path="/publication-types" element={<PublicationTypes />} />}
             
+            <Route path="*" element={<Navigate to="/" />} />
         </Routes>
     );
 }
