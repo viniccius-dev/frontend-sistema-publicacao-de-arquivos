@@ -19,8 +19,6 @@ export function AppRoutes() {
                 ?
                 <Routes>
                     <Route path="/" element={<SignIn />} />
-
-                    <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
                 :
                 <LoggRoutes />

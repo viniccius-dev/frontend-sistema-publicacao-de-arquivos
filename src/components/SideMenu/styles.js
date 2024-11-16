@@ -116,6 +116,7 @@ export const Nav = styled.nav`
 
                 > label {
                     padding: 10px 20px;
+                    margin-bottom: 5px;
                     width: 100%;
                     display: inline-block;
                     background-color: ${({ theme }) => theme.COLORS.BLUE_100};

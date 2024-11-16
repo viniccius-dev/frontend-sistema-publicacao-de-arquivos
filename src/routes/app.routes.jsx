@@ -18,13 +18,12 @@ export function LoggRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/users" element={<Users />} />
             <Route path="/publication/:id" element={<Details />} />
-            <Route path="/publication-types" element={<PublicationTypes />} />
             <Route path="/edit-publication/:id" element={<EditPublication />} />
             <Route path="/create-publication" element={<NewPublication />} />
 
             {user.role === "admin" && <Route path="/domains" element={<Domains />} />}
+            {user.role === "admin" && <Route path="/publication-types" element={<PublicationTypes />} />}
             
-            <Route path="*" element={<Navigate to="/" />} />
         </Routes>
     );
 }
