@@ -18,14 +18,16 @@ export function InputSelect({ title, group, options, onSelect, selected, objectV
     };
 
     useEffect(() => {
-        setSelectedOption(selected);
+        setSelectedOption(selected || null);
     }, [selected]);
 
     return (
         <Container>
             <SelectButton onClick={toggleDropdown}>
                 <div>
-                    {selectedOption ? selectedOption[objectValue] : title}
+                    {selectedOption && Object.keys(selectedOption).length > 0 
+                    ? selectedOption[objectValue] 
+                    : title}
                 </div>
 
                 <Chevrons data-is-open={isOpen}>

@@ -54,10 +54,21 @@ export function Details() {
     };
 
     function formatDateTime(dateTime) {
-        const [fullDate, fullTime] = dateTime.split(' ');
-        const [year, month, day] = fullDate.split('-');
-        return `${day}/${month}/${year} às ${fullTime}`;
-    };
+        const dateObj = new Date(dateTime);
+    
+        // Ajusta o horário para -3 horas
+        dateObj.setHours(dateObj.getHours() - 3);
+    
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Meses começam do zero
+        const year = dateObj.getFullYear();
+    
+        const hours = String(dateObj.getHours()).padStart(2, '0');
+        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+        const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+    
+        return `${day}/${month}/${year} às ${hours}:${minutes}:${seconds}`;
+    }
 
     function getFileExtension(filename) {
         return filename.split('.').pop();
