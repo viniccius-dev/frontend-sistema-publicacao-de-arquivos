@@ -80,7 +80,7 @@ export function NewPublication() {
         if(errors.length > 0) {
             alert(errors.join("\n"));
             return;
-        }
+        };
 
         const publicationData = {
             type_of_publication_id: selectedType?.id,

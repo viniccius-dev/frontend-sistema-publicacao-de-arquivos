@@ -77,11 +77,20 @@ export function Details() {
     useEffect(() => {
         setAnimationLoading(true);
         async function fetchPublication() {
-            const responsePublication = await api.get(`/publications/${params.id}`);
-            const responseAttachments = await api.get(`/publications/attachments/${params.id}`);
-            setPublication(responsePublication.data);
-            setAttachments(responseAttachments.data);
-            setAnimationLoading(false);
+            try {
+                const responsePublication = await api.get(`/publications/${params.id}`);
+                const responseAttachments = await api.get(`/publications/attachments/${params.id}`);
+                setPublication(responsePublication.data);
+                setAttachments(responseAttachments.data);
+            } catch(error) {
+                if(error.response) {
+                    console.error(error.response.data.message);
+                } else {
+                    console.error("erro ao cadastrar a publicação");
+                };
+            } finally {
+                setAnimationLoading(false);
+            }
         };
 
         fetchPublication();
