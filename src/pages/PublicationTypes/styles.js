@@ -6,7 +6,7 @@ export const Container = styled.div`
     padding: 0 1.5rem;
     overflow-y: auto;
 
-    .usersLoading {
+    .typesLoading {
         height: 80%;
     }
 `;

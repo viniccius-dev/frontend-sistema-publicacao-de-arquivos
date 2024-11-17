@@ -3,21 +3,15 @@ import { useState } from "react";
 import { Container, HiddenCheckbox, StyledCheckbox, Text } from "./styles";
 import { IoCheckmarkOutline } from "react-icons/io5";
 
-export function Checkbox({ children, ...props }) {
-    const [checked, setChecked] = useState(false);
-
-    function handleCheckboxChange() {
-        setChecked(!checked);
-    }
-
+export function Checkbox({ children, checked, onClick, ...props }) {
     return (
         <Container
             checked={checked}
-            onClick={handleCheckboxChange}
+            onClick={onClick}
         >
             <HiddenCheckbox 
                 checked={checked}
-                onChange={handleCheckboxChange}
+                onChange={onClick}
                 {...props}
             />
             <StyledCheckbox checked={checked}>

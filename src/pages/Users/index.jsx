@@ -85,7 +85,7 @@ export function Users() {
                     old_password: oldPassword,
                     domain_id: selectedDomain?.id,
                     modify_user_id: selectedUser?.id
-                };;
+                };
                 let sessionUpdated;
 
                 if(user.id === selectedUser?.id || user.role !== "admin") {
