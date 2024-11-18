@@ -95,7 +95,7 @@ export function EditPublication() {
             errors.push(`O campo ${selectedType?.description_title} não pode estar vazio.`);
         };
 
-        if(selectedType?.file_title && files.length === 0 || deleteAttachments.length >= attachments.length) {
+        if(selectedType?.file_title && files.length === 0 && deleteAttachments?.length >= attachments?.length) {
             errors.push("É necessário anexar pelo menos um arquivo.");
         };
 
