@@ -16,7 +16,7 @@ export const SelectButton = styled.div`
     border-radius: 10px;
     background-color: ${({ theme }) => theme.COLORS.GRAY_100};
     color: ${({ theme }) => theme.COLORS.WHITE_100};
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.4);
 `;
 
 export const Chevrons = styled.div`
@@ -41,7 +41,7 @@ export const OptionList = styled.div`
     margin-top: 0.25rem;
     border-radius: 10px;
     background-color: ${({ theme }) => theme.COLORS.GRAY_300};
-    color: ${({ theme }) => theme.COLORS.BACKGROUND_800};
+    color: ${({ theme }) => theme.COLORS.BACKGROUND_900};
 
     &[data-is-open="true"] {
         max-height: 2000px;

@@ -5,7 +5,7 @@ export const Container = styled.button`
 
     background-color: ${({ theme, $background }) => $background === "default" ? theme.COLORS.BLUE_100 : theme.COLORS.BROWN_200};
     color: ${({ theme, $background }) => $background === "default" ? theme.COLORS.BACKGROUND_900 : theme.COLORS.WHITE_100};
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
 
     min-height: 3rem;
     border: 0;

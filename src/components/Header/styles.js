@@ -8,7 +8,7 @@ export const Container = styled.div`
     justify-content: space-between;
     margin: 0 1.5rem;
     padding: 1rem 0;
-    border-bottom: ${({ theme }) => `1px solid ${theme.COLORS.BACKGROUND_900}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.COLORS.GRAY_200}`};
 
     > h1 {
         font-size: 1.5rem;

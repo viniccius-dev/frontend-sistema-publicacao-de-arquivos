@@ -6,6 +6,7 @@ export const Container = styled.div`
     align-items: center;
     background-color: ${({ theme, $background }) => $background === "default" ? theme.COLORS.WHITE_200 : theme.COLORS.GRAY_100};
     color: ${({ theme }) => theme.COLORS.GRAY_300};
+    box-shadow: ${({ $background }) => $background === "default" ? `0 2px 5px 0 rgba(0, 0, 0, 0.1)` : `0 2px 5px 0 rgba(0, 0, 0, 0.4)`};
 
     margin-bottom: .5rem;
     border-radius: .63rem;
@@ -17,7 +18,6 @@ export const Container = styled.div`
 
         padding: .75rem;
         border-radius: .63rem;
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
 
         color: ${({ theme, $background  }) => $background === "default" ? theme.COLORS.BACKGROUND_900 : theme.COLORS.WHITE_100};
         background: transparent;

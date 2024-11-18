@@ -7,7 +7,7 @@ export const Container = styled.div`
     margin: 10px 0;
     border-radius: 5px;
 
-    background-color: ${props => props.checked ? '#97C160' : '#E5E5E5'};
+    background-color: ${props => props.checked ? '#FF5400' : '#D9D9D9'};
 
     display: flex;
     align-items: center;
@@ -42,6 +42,6 @@ export const StyledCheckbox = styled.label`
 
     svg {
         display: ${props => props.checked ? 'flex' : 'none'};
-        color: #97C160;
+        color: #FF5400;
     }
 `;
