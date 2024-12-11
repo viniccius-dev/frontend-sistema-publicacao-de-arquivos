@@ -28,10 +28,15 @@ export function NewPublication() {
     const [number, setNumber] = useState("");
     const [date, setDate] = useState("");
     const [description, setDescription] = useState("");
-    const [files, setFiles] = useState([]);
+    const [mainFiles, setMainFiles] = useState([]);
+    const [subAttachmentFiles, setSubAttachmentFiles] = useState([]); 
 
-    const handleFilesChange = (newFiles) => {
-        setFiles(newFiles);
+    const handleMainFilesChange = (newFiles) => {
+        setMainFiles(newFiles);
+    };
+
+    const handleSubAttachmentFilesChange = (newFiles) => {
+        setSubAttachmentFiles(newFiles);
     };
 
     const isValidDateTime = (dateString) => {
@@ -73,15 +78,16 @@ export function NewPublication() {
             errors.push(`O campo ${selectedType?.description_title} não pode estar vazio.`);
         };
 
-        if(selectedType?.file_title && files.length === 0) {
+        if(selectedType?.file_title && mainFiles.length === 0) {
             errors.push("É necessário anexar pelo menos um arquivo.");
         };
 
+        
         if(errors.length > 0) {
             alert(errors.join("\n"));
             return;
         };
-
+        
         const publicationData = {
             type_of_publication_id: selectedType?.id,
             number: number === '' ? null : number,
@@ -95,18 +101,35 @@ export function NewPublication() {
         try {
             const publicationResponse = await api.post("/publications", publicationData);
 
-            if(files.length > 0) {
-                const formData = new FormData();
-                files.forEach(fileObj => {
-                    formData.append("attachment", fileObj.file);
+            if (mainFiles.length > 0) {
+                const mainFormData = new FormData();
+                mainFiles.forEach(fileObj => {
+                    mainFormData.append("attachment", fileObj.file);
                 });
+                mainFormData.append("type", "main");
 
-                await api.post(`/publications/attachments/${publicationResponse.data.publication.id}`, formData, {
+                console.log(`/publications/attachments/${publicationResponse.data.publication.id}`);
+                
+                await api.post(`/publications/attachments/${publicationResponse.data.publication.id}`, mainFormData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
             };
+
+            if (subAttachmentFiles.length > 0) {
+                const subAttachmentFormData = new FormData();
+                subAttachmentFiles.forEach(fileObj => {
+                    subAttachmentFormData.append("attachment", fileObj.file);
+                });
+                subAttachmentFormData.append("type", "subattachments");
+
+                await api.post(
+                    `/publications/attachments/${publicationResponse.data.publication.id}`,
+                    subAttachmentFormData,
+                    { headers: { 'Content-Type': 'multipart/form-data' } }
+                );
+            }
 
             alert("Publicação cadastrada com sucesso!");
             navigate("/");
@@ -155,7 +178,8 @@ export function NewPublication() {
         setNumber("");
         setDate("");
         setDescription("");
-        setFiles([]);
+        setMainFiles([]);
+        setSubAttachmentFiles([]);
     }, [selectedType]);
 
     return (
@@ -180,6 +204,14 @@ export function NewPublication() {
                                 selected={selectedType || {}}
                             />
                         </InputWrapper>
+                        {
+                            selectedType?.file_title &&
+
+                            <InputWrapper>
+                                <label>{selectedType.file_title}</label>
+                                <Uploads onFilesChange={handleMainFilesChange} main={true} />
+                            </InputWrapper>
+                        }
                         {
                             selectedType?.number_title &&
 
@@ -222,11 +254,11 @@ export function NewPublication() {
                             </InputWrapper>
                         }
                         {
-                            selectedType?.file_title &&
+                            selectedType &&
 
                             <InputWrapper>
-                                <label>{selectedType.file_title}</label>
-                                <Uploads onFilesChange={handleFilesChange} />
+                                <label>Anexos (Opcional)</label>
+                                <Uploads onFilesChange={handleSubAttachmentFilesChange}  />
                             </InputWrapper>
                         }
                         {

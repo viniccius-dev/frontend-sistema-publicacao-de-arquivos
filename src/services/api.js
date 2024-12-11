@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "https://backend-sistema-de-publicacao-de-arquivos.onrender.com"
+    baseURL: "http://localhost:3334"
 });

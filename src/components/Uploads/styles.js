@@ -6,7 +6,7 @@ export const Container = styled.div`
     background-color: ${({ theme }) => theme.COLORS.GRAY_500};
     min-height: 154px;
     border-radius: 0.43rem;
-    margin-top: 5px;
+    margin: 5px 0;
 
     display: flex;
     gap: 1rem;

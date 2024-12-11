@@ -4,7 +4,7 @@ import { Container } from './styles';
 
 import { ArquiveItem } from '../ArquiveItem';
 
-export function Uploads({ onFilesChange }) {
+export function Uploads({ onFilesChange, main = false }) {
     const [files, setFiles] = useState([]);
 
     const handleFileChange = (e) => {
@@ -39,11 +39,13 @@ export function Uploads({ onFilesChange }) {
                     />
                 ))
             }
-            <ArquiveItem 
-                isNew
-                placeholder="Novo arquivo"
-                onFileChange={handleFileChange}
-            />
+            {!main || files.length === 0 ? (
+                <ArquiveItem 
+                    isNew
+                    placeholder="Novo arquivo"
+                    onFileChange={handleFileChange}
+                />
+            ) : null}
         </Container>
     );
 }
