@@ -14,7 +14,8 @@ import { api } from '../../services/api';
 
 export function Details() {
     const [publication, setPublication] = useState(null);
-    const [attachments, setAttachments] = useState([]);
+    const [mainAttachment, setMainAttachment] = useState(null);
+    const [additionalAttachments, setAdditionalAttachments] = useState([]);
 
     const [animationLoading, setAnimationLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
@@ -81,7 +82,12 @@ export function Details() {
                 const responsePublication = await api.get(`/publications/${params.id}`);
                 const responseAttachments = await api.get(`/publications/attachments/${params.id}`);
                 setPublication(responsePublication.data);
-                setAttachments(responseAttachments.data);
+
+                const main = responseAttachments.data.find(file => file.type === 'main');
+                const additional = responseAttachments.data.filter(file => file.type === 'subattachments');
+
+                setMainAttachment(main || null);
+                setAdditionalAttachments(additional);
             } catch(error) {
                 if(error.response) {
                     console.error(error.response.data.message);
@@ -116,6 +122,17 @@ export function Details() {
                         </header>
 
                         {
+                            mainAttachment &&
+                            <Section title={publication.file_title}>
+                                <File
+                                    title={mainAttachment.name}
+                                    extension={getFileExtension(mainAttachment.attachment)}
+                                    onClick={() => handleLinkClick(mainAttachment.attachment)}
+                                />
+                            </Section>
+                        }
+
+                        {
                             publication.description_title &&
 
                             <Section title={publication.description_title}>
@@ -124,9 +141,9 @@ export function Details() {
                         }
 
                         {
-                            attachments?.length > 0 &&
-                            <Section title={publication.file_title}>
-                                {attachments.map((file, index) => (
+                            additionalAttachments.length > 0 &&
+                            <Section title="Anexos Adicionais">
+                                {additionalAttachments.map((file, index) => (
                                     <File 
                                         key={index}
                                         title={file.name}
