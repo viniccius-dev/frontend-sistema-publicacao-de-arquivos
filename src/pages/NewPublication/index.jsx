@@ -70,7 +70,7 @@ export function NewPublication() {
             if(!date.trim()) {
                 errors.push(`O campo ${selectedType?.date_title} não pode estar vazio.`)
             } else if(!isValidDateTime(date)) {
-                alert("Data inválida. Por favor, verifique e tente novamente.");
+                errors.push("Data inválida. Por favor, verifique e tente novamente.");
             };
         };
 
@@ -79,7 +79,7 @@ export function NewPublication() {
         };
 
         if(selectedType?.file_title && mainFiles.length === 0) {
-            errors.push("É necessário anexar pelo menos um arquivo.");
+            errors.push(`É necessário inserir ${selectedType?.file_title}.`);
         };
 
         
@@ -107,8 +107,6 @@ export function NewPublication() {
                     mainFormData.append("attachment", fileObj.file);
                 });
                 mainFormData.append("type", "main");
-
-                console.log(`/publications/attachments/${publicationResponse.data.publication.id}`);
                 
                 await api.post(`/publications/attachments/${publicationResponse.data.publication.id}`, mainFormData, {
                     headers: {

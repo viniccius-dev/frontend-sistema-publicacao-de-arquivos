@@ -33,7 +33,9 @@ export function Details() {
 
             if(confirm) {
                 setDeleteLoading(true);
-                const files = { attachments: attachments.map(attachment => attachment.id) };
+                const mainFile = { attachments: [mainAttachment.id] };
+                const subAttachmentFiles = { attachments: additionalAttachments.map(attachment => attachment.id) };
+                const files = [...mainFile.attachments, ...subAttachmentFiles.attachments];
 
                 await api.delete(`/publications/${params.id}`, { data: files });
                 alert("Publicação deletada com sucesso.");
@@ -118,7 +120,7 @@ export function Details() {
                             <h2>
                                 {publication.name}{publication.number && `, ${publication.number}`}{publication.date && `, ${publication.date}`}
                             </h2>
-                            <small><FaClock /> Publicado em: {formatDateTime(publication.created_at)}</small>
+                            <small><FaClock /> Publicado em: {formatDateTime(publication.updated_at)}</small>
                         </header>
 
                         {

@@ -45,7 +45,6 @@ export function Home() {
                 if(error.response) {
                     alert(error.response.data.message);
                 } else {
-                    console.log(error);
                     alert("Não foi possível acessar os dados das publicações");
                 };
             } finally {

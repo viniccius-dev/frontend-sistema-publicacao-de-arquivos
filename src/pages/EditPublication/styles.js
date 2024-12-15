@@ -1,11 +1,18 @@
 import styled from "styled-components";
-import { DEVICE_BREAKPOINTS } from "../../styles/deviceBreakpoints";
 
 export const Container = styled.form`
     grid-area: content;
     padding: 1.25rem 1.5rem;
 
     overflow-y: auto;
+
+    .currentFiles {
+        padding: 20px 30px 1px 20px;
+        border: ${({ theme }) => `1px solid ${theme.COLORS.GRAY_300}`};
+        margin: 20px 0;
+        border-radius: 20px;
+        background-color: ${({ theme }) => theme.COLORS.GRAY_500};
+    }
 `;
 
 export const InputWrapper = styled.div`
@@ -30,6 +37,10 @@ export const Archive = styled.div`
     gap: 10px;
     align-items: center;
     justify-content: space-between;
+    background-color: ${({ theme }) => theme.COLORS.WHITE_200};
+    padding: 5px 5px 0 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
 
     > svg {
         margin-bottom: 7px;

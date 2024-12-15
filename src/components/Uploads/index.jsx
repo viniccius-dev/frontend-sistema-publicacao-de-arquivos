@@ -4,10 +4,12 @@ import { Container } from './styles';
 
 import { ArquiveItem } from '../ArquiveItem';
 
-export function Uploads({ onFilesChange, main = false }) {
+export function Uploads({ onFilesChange, main = false, disabled = false }) {
     const [files, setFiles] = useState([]);
 
     const handleFileChange = (e) => {
+        if(disabled) return;
+
         const file = e.target.files[0];
         if(file) {
             if(file.size <= 30 * 1024 * 1024) { // Check file size (30 MB)
@@ -16,10 +18,10 @@ export function Uploads({ onFilesChange, main = false }) {
                 setFiles(newFiles);
                 onFilesChange(newFiles)
             } else {
-                alert("Arquivo muito grande. O tamanho máximo é de 50 MB.");
+                alert("Arquivo muito grande. O tamanho máximo é de 30 MB.");
             }
         };
-        } 
+    } 
 
     const handleRemoveFile = (fileName) => {
         const newFiles = files.filter(fileObj => fileObj.file.name !== fileName);
@@ -44,6 +46,7 @@ export function Uploads({ onFilesChange, main = false }) {
                     isNew
                     placeholder="Novo arquivo"
                     onFileChange={handleFileChange}
+                    disabled={disabled}
                 />
             ) : null}
         </Container>

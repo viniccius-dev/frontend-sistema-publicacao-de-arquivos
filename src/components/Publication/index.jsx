@@ -14,7 +14,7 @@ export function Publication({ data, ...rest }) {
             </Details>
             <PublicationDate>
                 <span>Data de Publicação:</span>
-                <span>{formatDate(data.created_at)}</span>
+                <span>{formatDate(data.updated_at)}</span>
             </PublicationDate>
         </Container>
     );

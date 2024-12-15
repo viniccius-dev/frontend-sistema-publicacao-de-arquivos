@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { TfiDropboxAlt } from "react-icons/tfi";
 import { FaXmark } from 'react-icons/fa6';
@@ -25,7 +25,8 @@ export function EditPublication() {
     const [previousSelectedType, setPreviousSelectedType] = useState(null);
 
     const [publication, setPublication] = useState(null);
-    const [attachments, setAttachments] = useState([]);
+    const [mainAttachment, setMainAttachment] = useState(null);
+    const [additionalAttachments, setAdditionalAttachments] = useState([]);
     const [deleteAttachments, setDeleteAttachments] = useState([]);
     const [types, setTypes] = useState([]);
     const [selectedType, setSelectedType] = useState(null);
@@ -33,7 +34,9 @@ export function EditPublication() {
     const [number, setNumber] = useState("");
     const [date, setDate] = useState("");
     const [description, setDescription] = useState("");
-    const [files, setFiles] = useState([]);
+    const [isMainUploadDisabled, setIsMainUploadDisabled] = useState(true);
+    const [mainFile, setMainFile] = useState([]);
+    const [additionalFiles, setAdditionalFiles] = useState([]);
 
     function getFileExtension(filename) {
         return filename.split('.').pop();
@@ -43,8 +46,12 @@ export function EditPublication() {
         window.open(`${api.defaults.baseURL}/files/${pathFile}`, '_blank');
     };
 
-    const handleFilesChange = (newFiles) => {
-        setFiles(newFiles);
+    const handleMainFilesChange = (newFiles) => {
+        setMainFile(newFiles);
+    };
+    
+    const handleAdditionalFilesChange = (newFiles) => {
+        setAdditionalFiles(newFiles);
     };
 
     const handleFilesDelete = (file) => {
@@ -52,7 +59,13 @@ export function EditPublication() {
 
         if(confirm) {
             setDeleteAttachments(files => [...files, file.id]);
-            setAttachments(attachments.filter(attachment => attachment.id !== file.id));
+            if (mainAttachment?.id === file.id) {
+                setMainAttachment(null);
+                setIsMainUploadDisabled(false);
+            }
+            setAdditionalAttachments((attachments) =>
+                attachments.filter((attachment) => attachment.id !== file.id)
+            );
         };
     };
 
@@ -87,7 +100,7 @@ export function EditPublication() {
             if(!date.trim()) {
                 errors.push(`O campo ${selectedType?.date_title} não pode estar vazio.`)
             } else if(!isValidDateTime(date)) {
-                alert("Data inválida. Por favor, verifique e tente novamente.");
+                errors.push("Data inválida. Por favor, verifique e tente novamente.");
             };
         };
 
@@ -95,8 +108,8 @@ export function EditPublication() {
             errors.push(`O campo ${selectedType?.description_title} não pode estar vazio.`);
         };
 
-        if(selectedType?.file_title && files.length === 0 && attachments.length === 0) {
-            errors.push("É necessário anexar pelo menos um arquivo.");
+        if(selectedType?.file_title && !mainAttachment && mainFile.length === 0) {
+            errors.push(`É necessário inserir ${selectedType?.file_title}.`);
         };
 
         if(errors.length > 0) {
@@ -121,18 +134,33 @@ export function EditPublication() {
                 await api.delete(`/publications/attachments`, { data: deleteFiles });
             };
 
-            if(files.length > 0) {
-                const formData = new FormData();
-                files.forEach(fileObj => {
-                    formData.append("attachment", fileObj.file);
+            if(mainFile.length > 0) {
+                const mainFormData = new FormData();
+                mainFile.forEach(fileObj => {
+                    mainFormData.append("attachment", fileObj.file);
                 });
+                mainFormData.append("type", "main");
 
-                await api.post(`/publications/attachments/${params.id}`, formData, {
+                await api.post(`/publications/attachments/${params.id}`, mainFormData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
             };
+
+            if (additionalFiles.length > 0) {
+                const subAttachmentFormData = new FormData();
+                additionalFiles.forEach(fileObj => {
+                    subAttachmentFormData.append("attachment", fileObj.file);
+                });
+                subAttachmentFormData.append("type", "subattachments");
+
+                await api.post(`/publications/attachments/${params.id}`, subAttachmentFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+            }
             
             alert("Publicação atualizada com sucesso!");
             location.reload();
@@ -159,7 +187,11 @@ export function EditPublication() {
                 ]);
     
                 // Define os estados com os dados recebidos
-                setAttachments(attachmentsResponse.data);
+                const main = attachmentsResponse.data.find(file => file.type === 'main');
+                const additional = attachmentsResponse.data.filter(file => file.type === 'subattachments');
+
+                setMainAttachment(main || null);
+                setAdditionalAttachments(additional);
                 setTypes(typesResponse.data);
                 setPublication(publicationResponse.data);
     
@@ -192,7 +224,8 @@ export function EditPublication() {
         setNumber("");
         setDate("");
         setDescription("");
-        setFiles([]);
+        setMainFile([]);
+        setAdditionalFiles([]);
     };
 
     useEffect(() => {
@@ -229,6 +262,42 @@ export function EditPublication() {
                                 selected={selectedType}
                             />
                         </InputWrapper>
+
+                        {
+                            selectedType?.file_title && mainAttachment && 
+
+                            <InputWrapper className="currentFiles">
+                                <label>{selectedType.file_title} Atual</label>
+                                <div className="savedUploads">
+                                    {
+                                            mainAttachment &&
+
+                                            <Archive>
+                                                <File 
+                                                    title={mainAttachment.name} 
+                                                    extension={getFileExtension(mainAttachment.attachment)} 
+                                                    onClick={() => handleLinkClick(mainAttachment.attachment)}
+                                                />
+                                                <FaXmark onClick={() => handleFilesDelete(mainAttachment)} />
+                                            </Archive>
+                                    }
+                                </div>
+                            </InputWrapper>
+                        }
+
+                        {
+                            selectedType?.file_title && 
+
+                            <InputWrapper>
+                                <label>Adicionar {selectedType.file_title}</label>
+                                <Uploads
+                                    onFilesChange={handleMainFilesChange}
+                                    main={true}
+                                    disabled={isMainUploadDisabled}
+                                />
+                            </InputWrapper>
+                        }
+
                         {
                             selectedType?.number_title &&
 
@@ -272,32 +341,34 @@ export function EditPublication() {
                             </InputWrapper>
                         }
 
-                        <InputWrapper>
-                            <label>Anexos Salvos</label>
-                            <div className="savedUploads">
-                                {
-                                    attachments.map((file, index) => (
-                                        <Archive key={index}>
-                                            <File 
-                                                title={file.name} 
-                                                extension={getFileExtension(file.attachment)} 
-                                                onClick={() => handleLinkClick(file.attachment)}
-                                            />
-                                            <FaXmark onClick={() => handleFilesDelete(file)} />
-                                        </Archive>
-                                    ))
-                                }
-                            </div>
-                        </InputWrapper>
-
                         {
-                            selectedType?.file_title &&
+                            additionalAttachments.length > 0 && 
 
-                            <InputWrapper>
-                                <label>{selectedType.file_title}</label>
-                                <Uploads onFilesChange={handleFilesChange} />
+                            <InputWrapper className="currentFiles">
+                                <label>Anexos Salvos</label>
+                                <div className="savedUploads">
+                                    {
+                                        additionalAttachments.map((file, index) => (
+                                            <Archive key={index}>
+                                                <File 
+                                                    title={file.name} 
+                                                    extension={getFileExtension(file.attachment)} 
+                                                    onClick={() => handleLinkClick(file.attachment)}
+                                                />
+                                                <FaXmark onClick={() => handleFilesDelete(file)} />
+                                            </Archive>
+                                        ))
+                                    }
+                                </div>
                             </InputWrapper>
                         }
+
+                        
+
+                        <InputWrapper>
+                            <label>Adicionar Anexos</label>
+                            <Uploads onFilesChange={handleAdditionalFilesChange} disabled={false} />
+                        </InputWrapper>
 
                         <InputWrapper>
                             <Button 
